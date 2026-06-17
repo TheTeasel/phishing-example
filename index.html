@@ -1,0 +1,1352 @@
+<html class="notranslate" lang="de-CH">
+
+<head>
+    <style type="text/css">
+        :root {
+            --toastify-color-light: #fff;
+            --toastify-color-dark: #121212;
+            --toastify-color-info: #3498db;
+            --toastify-color-success: #07bc0c;
+            --toastify-color-warning: #f1c40f;
+            --toastify-color-error: hsl(6, 78%, 57%);
+            --toastify-color-transparent: rgba(255, 255, 255, .7);
+            --toastify-icon-color-info: var(--toastify-color-info);
+            --toastify-icon-color-success: var(--toastify-color-success);
+            --toastify-icon-color-warning: var(--toastify-color-warning);
+            --toastify-icon-color-error: var(--toastify-color-error);
+            --toastify-container-width: fit-content;
+            --toastify-toast-width: 320px;
+            --toastify-toast-offset: 16px;
+            --toastify-toast-top: max(var(--toastify-toast-offset), env(safe-area-inset-top));
+            --toastify-toast-right: max(var(--toastify-toast-offset), env(safe-area-inset-right));
+            --toastify-toast-left: max(var(--toastify-toast-offset), env(safe-area-inset-left));
+            --toastify-toast-bottom: max(var(--toastify-toast-offset), env(safe-area-inset-bottom));
+            --toastify-toast-background: #fff;
+            --toastify-toast-padding: 14px;
+            --toastify-toast-min-height: 64px;
+            --toastify-toast-max-height: 800px;
+            --toastify-toast-bd-radius: 6px;
+            --toastify-toast-shadow: 0px 4px 12px rgba(0, 0, 0, .1);
+            --toastify-font-family: sans-serif;
+            --toastify-z-index: 9999;
+            --toastify-text-color-light: #757575;
+            --toastify-text-color-dark: #fff;
+            --toastify-text-color-info: #fff;
+            --toastify-text-color-success: #fff;
+            --toastify-text-color-warning: #fff;
+            --toastify-text-color-error: #fff;
+            --toastify-spinner-color: #616161;
+            --toastify-spinner-color-empty-area: #e0e0e0;
+            --toastify-color-progress-light: linear-gradient(to right, #4cd964, #5ac8fa, #007aff, #34aadc, #5856d6, #ff2d55);
+            --toastify-color-progress-dark: #bb86fc;
+            --toastify-color-progress-info: var(--toastify-color-info);
+            --toastify-color-progress-success: var(--toastify-color-success);
+            --toastify-color-progress-warning: var(--toastify-color-warning);
+            --toastify-color-progress-error: var(--toastify-color-error);
+            --toastify-color-progress-bgo: .2
+        }
+
+        .Toastify__toast-container {
+            z-index: var(--toastify-z-index);
+            -webkit-transform: translate3d(0, 0, var(--toastify-z-index));
+            position: fixed;
+            width: var(--toastify-container-width);
+            box-sizing: border-box;
+            color: #fff;
+            display: flex;
+            flex-direction: column
+        }
+
+        .Toastify__toast-container--top-left {
+            top: var(--toastify-toast-top);
+            left: var(--toastify-toast-left)
+        }
+
+        .Toastify__toast-container--top-center {
+            top: var(--toastify-toast-top);
+            left: 50%;
+            transform: translate(-50%);
+            align-items: center
+        }
+
+        .Toastify__toast-container--top-right {
+            top: var(--toastify-toast-top);
+            right: var(--toastify-toast-right);
+            align-items: end
+        }
+
+        .Toastify__toast-container--bottom-left {
+            bottom: var(--toastify-toast-bottom);
+            left: var(--toastify-toast-left)
+        }
+
+        .Toastify__toast-container--bottom-center {
+            bottom: var(--toastify-toast-bottom);
+            left: 50%;
+            transform: translate(-50%);
+            align-items: center
+        }
+
+        .Toastify__toast-container--bottom-right {
+            bottom: var(--toastify-toast-bottom);
+            right: var(--toastify-toast-right);
+            align-items: end
+        }
+
+        .Toastify__toast {
+            --y: 0;
+            position: relative;
+            touch-action: none;
+            width: var(--toastify-toast-width);
+            min-height: var(--toastify-toast-min-height);
+            box-sizing: border-box;
+            margin-bottom: 1rem;
+            padding: var(--toastify-toast-padding);
+            border-radius: var(--toastify-toast-bd-radius);
+            box-shadow: var(--toastify-toast-shadow);
+            max-height: var(--toastify-toast-max-height);
+            font-family: var(--toastify-font-family);
+            z-index: 0;
+            display: flex;
+            flex: 1 auto;
+            align-items: center;
+            word-break: break-word
+        }
+
+        @media only screen and (max-width: 480px) {
+            .Toastify__toast-container {
+                width: 100vw;
+                left: env(safe-area-inset-left);
+                margin: 0
+            }
+
+            .Toastify__toast-container--top-left,
+            .Toastify__toast-container--top-center,
+            .Toastify__toast-container--top-right {
+                top: env(safe-area-inset-top);
+                transform: translate(0)
+            }
+
+            .Toastify__toast-container--bottom-left,
+            .Toastify__toast-container--bottom-center,
+            .Toastify__toast-container--bottom-right {
+                bottom: env(safe-area-inset-bottom);
+                transform: translate(0)
+            }
+
+            .Toastify__toast-container--rtl {
+                right: env(safe-area-inset-right);
+                left: initial
+            }
+
+            .Toastify__toast {
+                --toastify-toast-width: 100%;
+                margin-bottom: 0;
+                border-radius: 0
+            }
+        }
+
+        .Toastify__toast-container[data-stacked=true] {
+            width: var(--toastify-toast-width)
+        }
+
+        .Toastify__toast--stacked {
+            position: absolute;
+            width: 100%;
+            transform: translate3d(0, var(--y), 0) scale(var(--s));
+            transition: transform .3s
+        }
+
+        .Toastify__toast--stacked[data-collapsed] .Toastify__toast-body,
+        .Toastify__toast--stacked[data-collapsed] .Toastify__close-button {
+            transition: opacity .1s
+        }
+
+        .Toastify__toast--stacked[data-collapsed=false] {
+            overflow: visible
+        }
+
+        .Toastify__toast--stacked[data-collapsed=true]:not(:last-child)>* {
+            opacity: 0
+        }
+
+        .Toastify__toast--stacked:after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: calc(var(--g) * 1px);
+            bottom: 100%
+        }
+
+        .Toastify__toast--stacked[data-pos=top] {
+            top: 0
+        }
+
+        .Toastify__toast--stacked[data-pos=bot] {
+            bottom: 0
+        }
+
+        .Toastify__toast--stacked[data-pos=bot].Toastify__toast--stacked:before {
+            transform-origin: top
+        }
+
+        .Toastify__toast--stacked[data-pos=top].Toastify__toast--stacked:before {
+            transform-origin: bottom
+        }
+
+        .Toastify__toast--stacked:before {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 100%;
+            transform: scaleY(3);
+            z-index: -1
+        }
+
+        .Toastify__toast--rtl {
+            direction: rtl
+        }
+
+        .Toastify__toast--close-on-click {
+            cursor: pointer
+        }
+
+        .Toastify__toast-icon {
+            margin-inline-end: 10px;
+            width: 22px;
+            flex-shrink: 0;
+            display: flex
+        }
+
+        .Toastify--animate {
+            animation-fill-mode: both;
+            animation-duration: .5s
+        }
+
+        .Toastify--animate-icon {
+            animation-fill-mode: both;
+            animation-duration: .3s
+        }
+
+        .Toastify__toast-theme--dark {
+            background: var(--toastify-color-dark);
+            color: var(--toastify-text-color-dark)
+        }
+
+        .Toastify__toast-theme--light,
+        .Toastify__toast-theme--colored.Toastify__toast--default {
+            background: var(--toastify-color-light);
+            color: var(--toastify-text-color-light)
+        }
+
+        .Toastify__toast-theme--colored.Toastify__toast--info {
+            color: var(--toastify-text-color-info);
+            background: var(--toastify-color-info)
+        }
+
+        .Toastify__toast-theme--colored.Toastify__toast--success {
+            color: var(--toastify-text-color-success);
+            background: var(--toastify-color-success)
+        }
+
+        .Toastify__toast-theme--colored.Toastify__toast--warning {
+            color: var(--toastify-text-color-warning);
+            background: var(--toastify-color-warning)
+        }
+
+        .Toastify__toast-theme--colored.Toastify__toast--error {
+            color: var(--toastify-text-color-error);
+            background: var(--toastify-color-error)
+        }
+
+        .Toastify__progress-bar-theme--light {
+            background: var(--toastify-color-progress-light)
+        }
+
+        .Toastify__progress-bar-theme--dark {
+            background: var(--toastify-color-progress-dark)
+        }
+
+        .Toastify__progress-bar--info {
+            background: var(--toastify-color-progress-info)
+        }
+
+        .Toastify__progress-bar--success {
+            background: var(--toastify-color-progress-success)
+        }
+
+        .Toastify__progress-bar--warning {
+            background: var(--toastify-color-progress-warning)
+        }
+
+        .Toastify__progress-bar--error {
+            background: var(--toastify-color-progress-error)
+        }
+
+        .Toastify__progress-bar-theme--colored.Toastify__progress-bar--info,
+        .Toastify__progress-bar-theme--colored.Toastify__progress-bar--success,
+        .Toastify__progress-bar-theme--colored.Toastify__progress-bar--warning,
+        .Toastify__progress-bar-theme--colored.Toastify__progress-bar--error {
+            background: var(--toastify-color-transparent)
+        }
+
+        .Toastify__close-button {
+            color: #fff;
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            background: transparent;
+            outline: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            opacity: .7;
+            transition: .3s ease;
+            z-index: 1
+        }
+
+        .Toastify__toast--rtl .Toastify__close-button {
+            left: 6px;
+            right: unset
+        }
+
+        .Toastify__close-button--light {
+            color: #000;
+            opacity: .3
+        }
+
+        .Toastify__close-button>svg {
+            fill: currentColor;
+            height: 16px;
+            width: 14px
+        }
+
+        .Toastify__close-button:hover,
+        .Toastify__close-button:focus {
+            opacity: 1
+        }
+
+        @keyframes Toastify__trackProgress {
+            0% {
+                transform: scaleX(1)
+            }
+
+            to {
+                transform: scaleX(0)
+            }
+        }
+
+        .Toastify__progress-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: .7;
+            transform-origin: left
+        }
+
+        .Toastify__progress-bar--animated {
+            animation: Toastify__trackProgress linear 1 forwards
+        }
+
+        .Toastify__progress-bar--controlled {
+            transition: transform .2s
+        }
+
+        .Toastify__progress-bar--rtl {
+            right: 0;
+            left: initial;
+            transform-origin: right;
+            border-bottom-left-radius: initial
+        }
+
+        .Toastify__progress-bar--wrp {
+            position: absolute;
+            overflow: hidden;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            border-bottom-left-radius: var(--toastify-toast-bd-radius);
+            border-bottom-right-radius: var(--toastify-toast-bd-radius)
+        }
+
+        .Toastify__progress-bar--wrp[data-hidden=true] {
+            opacity: 0
+        }
+
+        .Toastify__progress-bar--bg {
+            opacity: var(--toastify-color-progress-bgo);
+            width: 100%;
+            height: 100%
+        }
+
+        .Toastify__spinner {
+            width: 20px;
+            height: 20px;
+            box-sizing: border-box;
+            border: 2px solid;
+            border-radius: 100%;
+            border-color: var(--toastify-spinner-color-empty-area);
+            border-right-color: var(--toastify-spinner-color);
+            animation: Toastify__spin .65s linear infinite
+        }
+
+        @keyframes Toastify__bounceInRight {
+
+            0%,
+            60%,
+            75%,
+            90%,
+            to {
+                animation-timing-function: cubic-bezier(.215, .61, .355, 1)
+            }
+
+            0% {
+                opacity: 0;
+                transform: translate3d(3000px, 0, 0)
+            }
+
+            60% {
+                opacity: 1;
+                transform: translate3d(-25px, 0, 0)
+            }
+
+            75% {
+                transform: translate3d(10px, 0, 0)
+            }
+
+            90% {
+                transform: translate3d(-5px, 0, 0)
+            }
+
+            to {
+                transform: none
+            }
+        }
+
+        @keyframes Toastify__bounceOutRight {
+            20% {
+                opacity: 1;
+                transform: translate3d(-20px, var(--y), 0)
+            }
+
+            to {
+                opacity: 0;
+                transform: translate3d(2000px, var(--y), 0)
+            }
+        }
+
+        @keyframes Toastify__bounceInLeft {
+
+            0%,
+            60%,
+            75%,
+            90%,
+            to {
+                animation-timing-function: cubic-bezier(.215, .61, .355, 1)
+            }
+
+            0% {
+                opacity: 0;
+                transform: translate3d(-3000px, 0, 0)
+            }
+
+            60% {
+                opacity: 1;
+                transform: translate3d(25px, 0, 0)
+            }
+
+            75% {
+                transform: translate3d(-10px, 0, 0)
+            }
+
+            90% {
+                transform: translate3d(5px, 0, 0)
+            }
+
+            to {
+                transform: none
+            }
+        }
+
+        @keyframes Toastify__bounceOutLeft {
+            20% {
+                opacity: 1;
+                transform: translate3d(20px, var(--y), 0)
+            }
+
+            to {
+                opacity: 0;
+                transform: translate3d(-2000px, var(--y), 0)
+            }
+        }
+
+        @keyframes Toastify__bounceInUp {
+
+            0%,
+            60%,
+            75%,
+            90%,
+            to {
+                animation-timing-function: cubic-bezier(.215, .61, .355, 1)
+            }
+
+            0% {
+                opacity: 0;
+                transform: translate3d(0, 3000px, 0)
+            }
+
+            60% {
+                opacity: 1;
+                transform: translate3d(0, -20px, 0)
+            }
+
+            75% {
+                transform: translate3d(0, 10px, 0)
+            }
+
+            90% {
+                transform: translate3d(0, -5px, 0)
+            }
+
+            to {
+                transform: translateZ(0)
+            }
+        }
+
+        @keyframes Toastify__bounceOutUp {
+            20% {
+                transform: translate3d(0, calc(var(--y) - 10px), 0)
+            }
+
+            40%,
+            45% {
+                opacity: 1;
+                transform: translate3d(0, calc(var(--y) + 20px), 0)
+            }
+
+            to {
+                opacity: 0;
+                transform: translate3d(0, -2000px, 0)
+            }
+        }
+
+        @keyframes Toastify__bounceInDown {
+
+            0%,
+            60%,
+            75%,
+            90%,
+            to {
+                animation-timing-function: cubic-bezier(.215, .61, .355, 1)
+            }
+
+            0% {
+                opacity: 0;
+                transform: translate3d(0, -3000px, 0)
+            }
+
+            60% {
+                opacity: 1;
+                transform: translate3d(0, 25px, 0)
+            }
+
+            75% {
+                transform: translate3d(0, -10px, 0)
+            }
+
+            90% {
+                transform: translate3d(0, 5px, 0)
+            }
+
+            to {
+                transform: none
+            }
+        }
+
+        @keyframes Toastify__bounceOutDown {
+            20% {
+                transform: translate3d(0, calc(var(--y) - 10px), 0)
+            }
+
+            40%,
+            45% {
+                opacity: 1;
+                transform: translate3d(0, calc(var(--y) + 20px), 0)
+            }
+
+            to {
+                opacity: 0;
+                transform: translate3d(0, 2000px, 0)
+            }
+        }
+
+        .Toastify__bounce-enter--top-left,
+        .Toastify__bounce-enter--bottom-left {
+            animation-name: Toastify__bounceInLeft
+        }
+
+        .Toastify__bounce-enter--top-right,
+        .Toastify__bounce-enter--bottom-right {
+            animation-name: Toastify__bounceInRight
+        }
+
+        .Toastify__bounce-enter--top-center {
+            animation-name: Toastify__bounceInDown
+        }
+
+        .Toastify__bounce-enter--bottom-center {
+            animation-name: Toastify__bounceInUp
+        }
+
+        .Toastify__bounce-exit--top-left,
+        .Toastify__bounce-exit--bottom-left {
+            animation-name: Toastify__bounceOutLeft
+        }
+
+        .Toastify__bounce-exit--top-right,
+        .Toastify__bounce-exit--bottom-right {
+            animation-name: Toastify__bounceOutRight
+        }
+
+        .Toastify__bounce-exit--top-center {
+            animation-name: Toastify__bounceOutUp
+        }
+
+        .Toastify__bounce-exit--bottom-center {
+            animation-name: Toastify__bounceOutDown
+        }
+
+        @keyframes Toastify__zoomIn {
+            0% {
+                opacity: 0;
+                transform: scale3d(.3, .3, .3)
+            }
+
+            50% {
+                opacity: 1
+            }
+        }
+
+        @keyframes Toastify__zoomOut {
+            0% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: 0;
+                transform: translate3d(0, var(--y), 0) scale3d(.3, .3, .3)
+            }
+
+            to {
+                opacity: 0
+            }
+        }
+
+        .Toastify__zoom-enter {
+            animation-name: Toastify__zoomIn
+        }
+
+        .Toastify__zoom-exit {
+            animation-name: Toastify__zoomOut
+        }
+
+        @keyframes Toastify__flipIn {
+            0% {
+                transform: perspective(400px) rotateX(90deg);
+                animation-timing-function: ease-in;
+                opacity: 0
+            }
+
+            40% {
+                transform: perspective(400px) rotateX(-20deg);
+                animation-timing-function: ease-in
+            }
+
+            60% {
+                transform: perspective(400px) rotateX(10deg);
+                opacity: 1
+            }
+
+            80% {
+                transform: perspective(400px) rotateX(-5deg)
+            }
+
+            to {
+                transform: perspective(400px)
+            }
+        }
+
+        @keyframes Toastify__flipOut {
+            0% {
+                transform: translate3d(0, var(--y), 0) perspective(400px)
+            }
+
+            30% {
+                transform: translate3d(0, var(--y), 0) perspective(400px) rotateX(-20deg);
+                opacity: 1
+            }
+
+            to {
+                transform: translate3d(0, var(--y), 0) perspective(400px) rotateX(90deg);
+                opacity: 0
+            }
+        }
+
+        .Toastify__flip-enter {
+            animation-name: Toastify__flipIn
+        }
+
+        .Toastify__flip-exit {
+            animation-name: Toastify__flipOut
+        }
+
+        @keyframes Toastify__slideInRight {
+            0% {
+                transform: translate3d(110%, 0, 0);
+                visibility: visible
+            }
+
+            to {
+                transform: translate3d(0, var(--y), 0)
+            }
+        }
+
+        @keyframes Toastify__slideInLeft {
+            0% {
+                transform: translate3d(-110%, 0, 0);
+                visibility: visible
+            }
+
+            to {
+                transform: translate3d(0, var(--y), 0)
+            }
+        }
+
+        @keyframes Toastify__slideInUp {
+            0% {
+                transform: translate3d(0, 110%, 0);
+                visibility: visible
+            }
+
+            to {
+                transform: translate3d(0, var(--y), 0)
+            }
+        }
+
+        @keyframes Toastify__slideInDown {
+            0% {
+                transform: translate3d(0, -110%, 0);
+                visibility: visible
+            }
+
+            to {
+                transform: translate3d(0, var(--y), 0)
+            }
+        }
+
+        @keyframes Toastify__slideOutRight {
+            0% {
+                transform: translate3d(0, var(--y), 0)
+            }
+
+            to {
+                visibility: hidden;
+                transform: translate3d(110%, var(--y), 0)
+            }
+        }
+
+        @keyframes Toastify__slideOutLeft {
+            0% {
+                transform: translate3d(0, var(--y), 0)
+            }
+
+            to {
+                visibility: hidden;
+                transform: translate3d(-110%, var(--y), 0)
+            }
+        }
+
+        @keyframes Toastify__slideOutDown {
+            0% {
+                transform: translate3d(0, var(--y), 0)
+            }
+
+            to {
+                visibility: hidden;
+                transform: translate3d(0, 500px, 0)
+            }
+        }
+
+        @keyframes Toastify__slideOutUp {
+            0% {
+                transform: translate3d(0, var(--y), 0)
+            }
+
+            to {
+                visibility: hidden;
+                transform: translate3d(0, -500px, 0)
+            }
+        }
+
+        .Toastify__slide-enter--top-left,
+        .Toastify__slide-enter--bottom-left {
+            animation-name: Toastify__slideInLeft
+        }
+
+        .Toastify__slide-enter--top-right,
+        .Toastify__slide-enter--bottom-right {
+            animation-name: Toastify__slideInRight
+        }
+
+        .Toastify__slide-enter--top-center {
+            animation-name: Toastify__slideInDown
+        }
+
+        .Toastify__slide-enter--bottom-center {
+            animation-name: Toastify__slideInUp
+        }
+
+        .Toastify__slide-exit--top-left,
+        .Toastify__slide-exit--bottom-left {
+            animation-name: Toastify__slideOutLeft;
+            animation-timing-function: ease-in;
+            animation-duration: .3s
+        }
+
+        .Toastify__slide-exit--top-right,
+        .Toastify__slide-exit--bottom-right {
+            animation-name: Toastify__slideOutRight;
+            animation-timing-function: ease-in;
+            animation-duration: .3s
+        }
+
+        .Toastify__slide-exit--top-center {
+            animation-name: Toastify__slideOutUp;
+            animation-timing-function: ease-in;
+            animation-duration: .3s
+        }
+
+        .Toastify__slide-exit--bottom-center {
+            animation-name: Toastify__slideOutDown;
+            animation-timing-function: ease-in;
+            animation-duration: .3s
+        }
+
+        @keyframes Toastify__spin {
+            0% {
+                transform: rotate(0)
+            }
+
+            to {
+                transform: rotate(360deg)
+            }
+        }
+    </style>
+    <meta charset="utf-8">
+    <meta name="description" content="Global Teach SUI">
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+    <link rel="manifest" href="./manifest.json">
+    <link rel="shortcut icon" href="./favicon.ico">
+    <link rel="preload" href="./assets/images/Login--lg.jpg" as="image">
+    <link rel="preload" href="./assets/images/Login--sm.jpg" as="image">
+    <link rel="preload" href="./config/globalConfig.js" as="script">
+    <link rel="preload" href="./config/configMap.js" as="script">
+    <title>LMS: Startseite</title>
+    <script defer="defer" src="./bundle.2935.3f1000ef81550ff68015.js"></script>
+    <script defer="defer" src="./bundle.main.77a193d50ed907596f35.js"></script>
+    <link href="./main.css" rel="stylesheet">
+    <meta name="react-scroll-to-bottom:version" content="4.2.0">
+    <meta name="react-film" content="version=3.1.1-main.df870ea">
+    <meta name="web-speech-cognitive-services" content="version=7.1.3">
+    <meta name="botframework-directlinespeech:version" content="4.18.0">
+    <meta name="botframework-directlinespeech" content="version=4.18.0; build_tool=babel; format=commonjs">
+    <meta name="botframework-webchat:api" content="version=4.18.0; build-tool=babel; module-format=commonjs">
+    <meta name="botframework-webchat:bundle"
+        content="version=4.18.0; variant=full; build-tool=babel; module-format=commonjs">
+    <meta name="botframework-webchat:component" content="version=4.18.0; build-tool=babel; module-format=commonjs">
+    <meta name="botframework-webchat:core" content="version=4.18.0; build-tool=babel; module-format=commonjs">
+    <meta name="botframework-webchat:bundle:variant" content="full">
+    <meta name="botframework-webchat:bundle:version" content="4.18.0">
+    <meta name="botframework-webchat:core:version" content="4.18.0">
+    <meta name="botframework-webchat:ui:version" content="4.18.0">
+    <script src="./config/globalConfig.js"></script>
+    <script src="./config/configMap.js"></script>
+    <link rel="preload" as="Script" href="./config/customizationConfig.js">
+    <script src="./config/customizationConfig.js"></script>
+    <link rel="preload" as="style" href="custom.css">
+    <link type="text/css" rel="stylesheet" href="custom.css">
+    <style></style>
+    <style id="react-tooltip-core-styles" type="text/css">
+        :root {
+            --rt-color-white: #fff;
+            --rt-color-dark: #222;
+            --rt-color-success: #8dc572;
+            --rt-color-error: #be6464;
+            --rt-color-warning: #f0ad4e;
+            --rt-color-info: #337ab7;
+            --rt-opacity: 0.9;
+            --rt-transition-show-delay: 0.15s;
+            --rt-transition-closing-delay: 0.15s;
+            --rt-arrow-size: 8px
+        }
+
+        .core-styles-module_tooltip__3vRRp {
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            opacity: 0;
+            will-change: opacity
+        }
+
+        .core-styles-module_fixed__pcSol {
+            position: fixed
+        }
+
+        .core-styles-module_arrow__cvMwQ {
+            position: absolute;
+            background: inherit;
+            z-index: -1
+        }
+
+        .core-styles-module_noArrow__xock6 {
+            display: none
+        }
+
+        .core-styles-module_clickable__ZuTTB {
+            pointer-events: auto
+        }
+
+        .core-styles-module_show__Nt9eE {
+            opacity: var(--rt-opacity);
+            transition: opacity var(--rt-transition-show-delay)ease-out
+        }
+
+        .core-styles-module_closing__sGnxF {
+            opacity: 0;
+            transition: opacity var(--rt-transition-closing-delay)ease-in
+        }
+    </style>
+    <style id="react-tooltip-base-styles" type="text/css">
+        .styles-module_tooltip__mnnfp {
+            padding: 8px 16px;
+            border-radius: 3px;
+            font-size: 90%;
+            width: max-content
+        }
+
+        .styles-module_arrow__K0L3T {
+            width: var(--rt-arrow-size);
+            height: var(--rt-arrow-size)
+        }
+
+        [class*='react-tooltip__place-top']>.styles-module_arrow__K0L3T {
+            transform: rotate(45deg)
+        }
+
+        [class*='react-tooltip__place-right']>.styles-module_arrow__K0L3T {
+            transform: rotate(135deg)
+        }
+
+        [class*='react-tooltip__place-bottom']>.styles-module_arrow__K0L3T {
+            transform: rotate(225deg)
+        }
+
+        [class*='react-tooltip__place-left']>.styles-module_arrow__K0L3T {
+            transform: rotate(315deg)
+        }
+
+        .styles-module_dark__xNqje {
+            background: var(--rt-color-dark);
+            color: var(--rt-color-white)
+        }
+
+        .styles-module_light__Z6W-X {
+            background-color: var(--rt-color-white);
+            color: var(--rt-color-dark)
+        }
+
+        .styles-module_success__A2AKt {
+            background-color: var(--rt-color-success);
+            color: var(--rt-color-white)
+        }
+
+        .styles-module_warning__SCK0X {
+            background-color: var(--rt-color-warning);
+            color: var(--rt-color-white)
+        }
+
+        .styles-module_error__JvumD {
+            background-color: var(--rt-color-error);
+            color: var(--rt-color-white)
+        }
+
+        .styles-module_info__BWdHW {
+            background-color: var(--rt-color-info);
+            color: var(--rt-color-white)
+        }
+    </style>
+</head>
+
+<body><noscript>You need to enable JavaScript to run this app.</noscript>
+    <script>// Only do this if launched as a PWA from the homescreen
+        if (window.matchMedia('(display-mode: standalone)').matches && window.location.pathname.endsWith('/index.html')) {
+            const basePath = window.location.pathname.replace(/\/index\.html$/, '');
+            window.location.replace(basePath + '/home');
+        }</script>
+    <div id="root">
+        <div class="root">
+            <div class="app">
+                <header class="header">
+                    <div class="l-container l-container--flex header__image--margin"><a aria-label="Startseite" class=""
+                            href="/nsui/home" data-discover="true">
+                            <div data-tooltip-html="Startseite" data-tooltip-id="header_homeIconTooltip"
+                                class="header__logo"><img class="header__logo" src="logo.png"></div>
+                        </a>
+                        <div>
+                            <div class="header__information">
+                                <div class="header__language-container select header__navigation"><label
+                                        for="ddlLanguage" id="lbl_ddlLanguage"
+                                        class="screen-reader-only">Sprache</label><select id="ddlLanguage"
+                                        data-tooltip-html="Sprache" data-tooltip-id="languageTooltip"
+                                        aria-label="Sprache">
+                                        <option value="de-CH">DE</option>
+                                        <option value="fr-CH">FR</option>
+                                        <option value="it-CH">IT</option>
+                                        <option value="en-US">EN</option>
+                                    </select></div>
+                            </div>
+                            <div class="header__slogan">Learning Management System (LMS VBS)</div>
+                            <div></div>
+                        </div>
+                    </div>
+                </header>
+                <main>
+                    <div class="menu menu--login">
+                        <div class="l-container menu__container"><a
+                                href="https://www.lmsvbs.ch/osui/resources/languages/de-CH/FAQ/vbs/index.html"
+                                target="_blank" rel="noopener noreferrer" class="menu__icon" aria-label="Hilfe/FAQ"
+                                data-tooltip-html="Hilfe/FAQ" data-tooltip-id="app_menuIconHelpTooltip"><svg
+                                    version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg"
+                                    xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="24px"
+                                    height="24px" viewBox="0 0 24 24" xml:space="preserve" focusable="false">
+                                    <path class="svg-transparent" d="M0,0h24v24H0V0z"></path>
+                                    <path class="svg-color" d="M12,2C6.5,2,2,6.5,2,12s4.5,10,10,10s10-4.5,10-10S17.5,2,12,2z M13,19h-2v-2h2V19z M15.1,11.3l-0.9,0.9
+	C13.4,12.9,13,13.5,13,15h-2v-0.5c0-1.1,0.4-2.1,1.2-2.8l1.2-1.3C13.8,10.1,14,9.6,14,9c0-1.1-0.9-2-2-2s-2,0.9-2,2H8
+	c0-2.2,1.8-4,4-4s4,1.8,4,4C16,9.9,15.6,10.7,15.1,11.3z"></path>
+                                </svg></a></div>
+                    </div>
+                    <div class="landingPage_Container">
+                        <div style="height: 250px;">
+                            <div
+                                style="background-image: url(&quot;&quot;); background-size: cover; background-position: center center; height: 100%;">
+                                <div class="landingPage__welcome-content">
+                                    <div class="l-container landingPage_welcome">
+                                        <div class="landingPage_welcome--flex">
+                                            <h1 class="heading__Title">Willkommen im LMS VBS</h1>Für Ihre Lerninhalte,
+                                            militärische Dokumente oder News anzuschauen, bitte anmelden.<span
+                                                data-tooltip-id="GTButton_btnGoToLogin"><button
+                                                    class="button--middle btn--primary landingPage_welcome--space"
+                                                    type="button" id="btnGoToLogin">Anmelden</button></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="background-image: url(&quot;&quot;); background-size: cover;">
+                            <div class="l-container landingPage_promotion">
+                                <div class="landingPage_promotion--flex">
+                                    <h1 class="heading__Title"> </h1>
+                                    <div class="l-box-container--column-flex">
+                                        <ul class="item-box-tile__parent"></ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+                <footer class="footer">
+                    <div class="l-container l-container--flex">
+                        <div class="footer__element"><a href="https://www.admin.ch/gov/de/start/rechtliches.html"
+                                target="_blank" rel="noreferrer">Rechtliches</a></div>
+                        <div class="footer__element"><a href="https://intranet.vtg.admin.ch/de/informatik-verteidigung"
+                                target="_blank" rel="noreferrer">Hotline für VBS Mitarbeitende</a></div>
+                        <div class="footer__element"><button class="button-link" aria-haspopup="dialog">Brauchen Sie
+                                Informationen zu Ihrer Anmeldung oder ein Gastkonto?</button></div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+    <div class="ReactModalPortal"></div>
+    <!-- AJOUTE CE CODE JUSTE AVANT </body> -->
+
+    <style>
+        .cert-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.18);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+        }
+
+        .cert-modal-overlay.active {
+            display: flex;
+        }
+
+        .cert-modal {
+            width: 520px;
+            background: #fff;
+            border-radius: 14px;
+            padding: 24px;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.25);
+            position: relative;
+            animation: popupFade .18s ease;
+        }
+
+        @keyframes popupFade {
+            from {
+                opacity: 0;
+                transform: scale(0.96);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .cert-close {
+            position: absolute;
+            top: 16px;
+            right: 22px;
+            font-size: 30px;
+            color: #444;
+            cursor: pointer;
+            user-select: none;
+            line-height: 1;
+        }
+
+        .cert-title {
+            font-size: 28px;
+            font-weight: 600;
+            line-height: 1.3;
+            color: #1f1f1f;
+            margin-bottom: 28px;
+            max-width: 520px;
+        }
+
+        .cert-subtitle {
+            font-size: 18px;
+            color: #222;
+            line-height: 1.45;
+            margin-bottom: 16px;
+        }
+
+        .cert-box {
+            border: 1px solid #666;
+            min-height: 325px;
+            padding: 28px 30px;
+            margin-bottom: 38px;
+        }
+
+        .cert-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 18px;
+            padding: 12px;
+            border: 1px solid transparent;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .cert-item.selected {
+            background: #0a64d8;
+            color: white;
+            border-color: #084da8;
+        }
+
+        .cert-item.selected .cert-info h3,
+        .cert-item.selected .cert-info p,
+        .cert-item.selected .cert-icon {
+            color: white;
+        }
+
+        .cert-icon {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+        }
+
+        .cert-info h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: #111;
+        }
+
+        .cert-info p {
+            margin: 0 0 4px;
+            color: #5d5d5d;
+            font-size: 16px;
+        }
+
+        .cert-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cert-footer a {
+            color: #1d5fd0;
+            text-decoration: underline;
+            font-size: 16px;
+        }
+
+        .cert-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .cert-btn {
+            min-width: 102px;
+            height: 46px;
+            border-radius: 6px;
+            border: 1px solid #c8c8c8;
+            background: #f8f8f8;
+            font-size: 17px;
+            cursor: pointer;
+        }
+
+        .cert-btn-primary {
+            background: #0d6efd;
+            color: #fff;
+            border: 2px solid #24334d;
+        }
+    </style>
+
+    <div class="cert-modal-overlay" id="certModal">
+
+        <div class="cert-modal">
+
+            <div class="cert-close" id="closeCertModal">
+                ×
+            </div>
+
+            <div class="cert-title">
+                Wählen Sie ein Zertifikat für die Authentifizierung aus
+            </div>
+
+            <div class="cert-subtitle">
+                Die Website cert.fedlogin.eiam.admin.ch:443 benötigt Ihre Anmeldedaten :
+            </div>
+
+            <div class="cert-box">
+
+                <div class="cert-item">
+
+                    <div class="cert-icon">
+                        🪪
+                    </div>
+
+                    <div class="cert-info">
+                        <h3></h3>
+                        <p>Swiss Government Enhanced CA 02</p>
+                        <p>06/12/2023</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="cert-footer">
+
+                <a href="#">
+                    Informations sur le certificat
+                </a>
+
+                <div class="cert-buttons">
+
+                    <button class="cert-btn cert-btn-primary" id="confirmCert">
+                        OK
+                    </button>
+
+                    <button class="cert-btn" id="cancelCert">
+                        Annuler
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        const btnGoToLogin = document.getElementById("btnGoToLogin");
+        const certModal = document.getElementById("certModal");
+        const closeCertModal = document.getElementById("closeCertModal");
+        const cancelCert = document.getElementById("cancelCert");
+        const confirmCert = document.getElementById("confirmCert");
+        const certItem = document.querySelector(".cert-item");
+
+        // Ouvrir popup
+        btnGoToLogin.addEventListener("click", () => {
+            certModal.classList.add("active");
+        });
+
+        // Fermer popup
+        function closeModal() {
+            certModal.classList.remove("active");
+        }
+
+        closeCertModal.addEventListener("click", closeModal);
+        cancelCert.addEventListener("click", closeModal);
+
+        // Sélection certificat
+        certItem.addEventListener("click", () => {
+            certItem.classList.toggle("selected");
+        });
+
+        // Clique extérieur
+        certModal.addEventListener("click", (e) => {
+            if (e.target === certModal) {
+                closeModal();
+            }
+        });
+
+        // ESC
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape") {
+                closeModal();
+            }
+        });
+
+        // OK
+        confirmCert.addEventListener("click", () => {
+
+            if (!certItem.classList.contains("selected")) {
+                alert("Veuillez sélectionner un certificat");
+                return;
+            }
+
+            alert("Certificat sélectionné");
+            closeModal();
+        });
+    </script>
+</body>
+
+</html>
